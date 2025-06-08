@@ -6,7 +6,6 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-
 @Entity(name = "product")
 @Getter
 @Setter
@@ -16,13 +15,10 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    private Long productId;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private String category;
 
     @Column(nullable = false)
     private Double weight;
