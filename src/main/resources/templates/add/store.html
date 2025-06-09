@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Store</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<h2>Add New Store</h2>
+
+<form id="storeForm">
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" required>
+
+    <label for="workingHours">Working hours:</label>
+    <input type="text" id="workingHours" name="workingHours" required>
+
+    <button type="button" onclick="submitStore()">Save</button>
+</form>
+
+<script>
+    function submitStore() {
+        const store = {
+            address: document.getElementById("address").value,
+            workingHours: document.getElementById("workingHours").value
+        };
+  
+        fetch("/api/store", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(store)
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = "/stores";
+            } else {
+                alert("Failed to add store");
+            }
+        });
+    }
+</script>
+</body>
+</html>

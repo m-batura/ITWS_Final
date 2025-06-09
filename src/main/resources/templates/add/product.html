@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add Product</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<h2>Add New Product</h2>
+
+<form id="productForm">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" required>
+
+  <label for="weight">Weight:</label>
+  <input type="number" id="weight" name="weight" step="0.01" required>
+
+  <label for="price">Price:</label>
+  <input type="number" id="price" name="price" step="0.01" required>
+
+  <button type="button" onclick="submitProduct()">Save</button>
+</form>
+
+<script>
+  function submitProduct() {
+      const product = {
+          name: document.getElementById("name").value,
+          weight: document.getElementById("weight").value,
+          price: document.getElementById("price").value
+      };
+
+      fetch("/api/product", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(product)
+      }).then(response => {
+          if (response.ok) {
+              window.location.href = "/products";
+          } else {
+              alert("Failed to add product");
+          }
+      });
+  }
+</script>
+</body>
+</html>

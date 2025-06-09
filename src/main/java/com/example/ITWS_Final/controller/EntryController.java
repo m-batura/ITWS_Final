@@ -18,8 +18,8 @@ public class EntryController {
     private final EntryService service;
 
     @GetMapping
-    public List<Entry> getEntrys() {
-        return service.getEntrys();
+    public List<Entry> getEntries() {
+        return service.getEntries();
     }
 
     @GetMapping(path = "/{id}")

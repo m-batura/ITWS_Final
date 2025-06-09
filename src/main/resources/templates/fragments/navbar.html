@@ -1,0 +1,9 @@
+<div th:fragment="navbar" xmlns:th="http://www.w3.org/1999/xhtml" class="navbar">
+  <nav>
+    <ul class="nav-list">
+      <li><a th:href="@{/products}" th:text="${menu.products}"></a></li>
+      <li><a th:href="@{/entries}" th:text="${menu.entries}"></a></li>
+      <li><a th:href="@{/stores}" th:text="${menu.stores}"></a></li>
+    </ul>
+  </nav>
+</div>

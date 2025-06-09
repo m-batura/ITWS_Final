@@ -22,7 +22,7 @@ public class EntryService {
     private final ProductRepo productRepo;
 
 
-    public List<Entry> getEntrys() {
+    public List<Entry> getEntries() {
         return repository.findAllByDeletedAtIsNull();
     }
 

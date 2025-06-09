@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Stores</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<button onclick="window.location.href='/add/store'">Add Store</button>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Address</th>
+        <th>Working Hours</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="store : ${stores}">
+        <td th:text="${store.address}" ></td>
+
+        <td th:text="${store.workingHours}"></td>
+
+        <td><a th:href="@{'/edit/store/' + ${store.id}}">Edit</a></td>
+
+        <td>
+            <button th:onclick="|deleteStore('${store.id}')|">
+                Delete
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    function deleteStore(storeId) {
+        if (confirm('Are you sure you want to delete this store?')) {
+            fetch(`/api/store/${storeId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Store deleted successfully!');
+                    location.reload();
+                } else {
+                    alert('Failed to delete store.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+</script>
+
+</body>
+</html>

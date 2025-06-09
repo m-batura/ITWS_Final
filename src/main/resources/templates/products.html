@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Products</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+    <div th:replace="fragments/navbar :: navbar"></div>
+    <button onclick="window.location.href='/add/product'">Add Product</button>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Weight</th>
+            <th>Price</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td><a th:href="@{'/product/' + ${product.id}}" th:text="${product.name}"></a></td>
+
+            <td th:text="|${product.weight}g|"></td>
+
+            <td th:text="|${product.price}rsd|"></td>
+
+            <td><a th:href="@{'/edit/product' + ${product.id}}">Edit</a></td>
+
+            <td>
+                <button th:onclick="|deleteProduct('${product.id}')|">
+                    Delete
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+<script>
+    function deleteProduct(productId) {
+        if (confirm('Are you sure you want to delete this product?')) {
+            fetch(`/api/product/${productId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Product deleted successfully!');
+                    location.reload();
+                } else {
+                    alert('Failed to delete product.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+</script>
+</body>
+</html>
