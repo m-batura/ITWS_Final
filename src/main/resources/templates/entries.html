@@ -1,37 +1,34 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Products</title>
+    <title>Entries</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
-<button onclick="window.location.href='/add-product'">Add Product</button>
+<button onclick="window.location.href='/add/entry'">Add Entry</button>
 
 <table border="1">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Price</th>
+        <th>ID</th>
+        <th>Product Name</th>
+        <th>Store Address</th>
+        <th>Quantity</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="product : ${products}">
-        <!-- Clickable Product Name -->
-        <td><a th:href="@{'/product/' + ${product.id}}" th:text="${product.name}"></a></td>
+    <tr th:each="entry : ${entries}">
+        <td th:text="${entry.id}"></td>
+        <td th:text="${entry.product.name}"></td>
+        <td th:text="${entry.store.address}"></td>
+        <td th:text="${entry.quantity}"></td>
+        <td><a th:href="@{'/edit/entry/' + ${entry.id}}">Edit</a></td>
 
-        <!-- Product Price -->
-        <td th:text="${product.price}"></td>
-
-        <!-- Edit Button -->
-        <td><a th:href="@{'/edit-product/' + ${product.id}}">Edit</a></td>
-
-        <!-- Delete Button with Confirmation -->
         <td>
-            <button th:attr="onclick='return confirm(\'Are you sure you want to delete this product?\')'"
-                    th:href="@{'/delete-product/' + ${product.id}}">
+            <button th:onclick="|deleteEntry('${entry.id}')|">
                 Delete
             </button>
         </td>
@@ -39,5 +36,22 @@
     </tbody>
 </table>
 
+<script>
+    function deleteEntry(entryId) {
+        if (confirm('Are you sure you want to delete this entry?')) {
+            fetch(`/api/entry/${entryId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('Failed to delete entry.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+</script>
 </body>
 </html>

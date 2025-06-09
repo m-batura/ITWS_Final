@@ -26,6 +26,10 @@ public class EntryService {
         return repository.findAllByDeletedAtIsNull();
     }
 
+    public List<Entry> getEntriesByProduct(Product product) {
+        return repository.findByProduct(product);
+    }
+
     public Optional<Entry> getEntryById(Integer id) {
         return repository.findByIdAndDeletedAtIsNull(id);
     }

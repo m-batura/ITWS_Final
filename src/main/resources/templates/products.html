@@ -20,13 +20,13 @@
         </thead>
         <tbody>
         <tr th:each="product : ${products}">
-            <td><a th:href="@{'/product/' + ${product.id}}" th:text="${product.name}"></a></td>
+            <td><a th:href="@{'/entries?productId=' + ${product.id}}" th:text="${product.name}"></a></td>
 
             <td th:text="|${product.weight}g|"></td>
 
             <td th:text="|${product.price}rsd|"></td>
 
-            <td><a th:href="@{'/edit/product' + ${product.id}}">Edit</a></td>
+            <td><a th:href="@{'/edit/product/' + ${product.id}}">Edit</a></td>
 
             <td>
                 <button th:onclick="|deleteProduct('${product.id}')|">
@@ -44,7 +44,6 @@
             })
             .then(response => {
                 if (response.ok) {
-                    alert('Product deleted successfully!');
                     location.reload();
                 } else {
                     alert('Failed to delete product.');

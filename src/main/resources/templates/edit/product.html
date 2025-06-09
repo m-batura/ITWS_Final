@@ -1,10 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Edit product</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<h2>Edit Product</h2>
 
+<form th:action="@{/api/product/{id}(id=${product.id})}" th:object="${product}" method="post">
+    <input type="hidden" th:field="*{id}">
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" th:field="*{name}" required>
+
+    <label for="weight">Weight:</label>
+    <input type="number" id="weight" th:field="*{weight}" step="0.01" required>
+
+    <label for="price">Price:</label>
+    <input type="number" id="price" th:field="*{price}" step="0.01" required>
+
+    <button type="button" onclick="updateProduct()">Update</button>
+</form>
+<script>
+    function updateProduct() {
+        const productId = document.getElementById("id").value;
+        const product = {
+            name: document.getElementById("name").value,
+            weight: document.getElementById("weight").value,
+            price: document.getElementById("price").value
+        };
+
+        fetch(`/api/product/${productId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(product)
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = "/products";
+            } else {
+                alert("Failed to update product");
+            }
+        });
+    }
+</script>
 </body>
 </html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add Entry</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<h2>Add Entry</h2>
+
+<form id="entryForm">
+  <label for="product">Product:</label>
+  <select id="product" name="product">
+    <option th:each="p : ${products}" th:value="${p.id}" th:text="${p.name}"></option>
+  </select>
+
+  <label for="store">Store:</label>
+  <select id="store" name="store">
+    <option th:each="s : ${stores}" th:value="${s.id}" th:text="${s.address}"></option>
+  </select>
+
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" name="quantity" required>
+
+  <button type="button" onclick="submitEntry()">Save</button>
+</form>
+
+<script>
+  function submitEntry() {
+      const entry = {
+          productId: document.getElementById("product").value,
+          storeId: document.getElementById("store").value,
+          quantity: document.getElementById("quantity").value
+      };
+
+      fetch("/api/entry", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(entry)
+      }).then(response => {
+          if (response.ok) {
+              window.location.href = "/entries";
+          } else {
+              alert("Failed to add entry");
+          }
+      });
+  }
+</script>
+</body>
+</html>

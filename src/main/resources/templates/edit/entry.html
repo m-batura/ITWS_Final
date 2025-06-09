@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Entry</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<h2>Edit Entry</h2>
+
+<form id="entryForm" th:action="@{/api/entry/{id}(id=${entry.id})}" th:object="${entry}" method="post">
+    <input type="hidden" th:field="*{id}">
+
+    <label for="product">Product:</label>
+    <select id="product" name="product">
+        <option th:each="p : ${products}" th:value="${p.id}" th:text="${p.name}" th:selected="${p.id == entry.product.id}"></option>
+    </select>
+
+    <label for="store">Store:</label>
+    <select id="store" name="store">
+        <option th:each="s : ${stores}" th:value="${s.id}" th:text="${s.address}" th:selected="${s.id == entry.store.id}"></option>
+    </select>
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" name="quantity" th:field="*{quantity}" required>
+
+    <button type="button" onclick="updateEntry()">Save</button>
+</form>
+
+<script>
+    function updateEntry() {
+        const entryId = document.getElementById("id").value;
+        const entry = {
+            productId: document.getElementById("product").value,
+            storeId: document.getElementById("store").value,
+            quantity: document.getElementById("quantity").value
+        };
+
+        fetch(`/api/entry/${entryId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(entry)
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = "/entries";
+            } else {
+                alert("Failed to update entry");
+            }
+        });
+    }
+</script>
+</body>
+</html>

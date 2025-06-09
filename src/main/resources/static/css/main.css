@@ -1,10 +1,12 @@
 .nav {
+
     text-align: center;
-    padding: 10px 0;
+
 }
 
 .nav-list {
     background-color: red;
+    padding: 50px;
     list-style: none;
     display: flex;
     justify-content: center;
